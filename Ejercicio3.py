@@ -4,14 +4,13 @@ import socket
 import ntplib
 from datetime import datetime
 
-# --- Funciones DNS ---
 def dns_nombre_a_ip():
     nombre = dns_entry.get()
     try:
         ip = socket.gethostbyname(nombre)
         dns_log.insert(tk.END, f"{nombre} → {ip}\n")
     except Exception as e:
-        dns_log.insert(tk.END, f"❌ Error: {e}\n")
+        dns_log.insert(tk.END, f"Error: {e}\n")
 
 def dns_ip_a_nombre():
     ip = dns_entry.get()
@@ -19,7 +18,7 @@ def dns_ip_a_nombre():
         nombre = socket.gethostbyaddr(ip)[0]
         dns_log.insert(tk.END, f"{ip} → {nombre}\n")
     except Exception as e:
-        dns_log.insert(tk.END, f"❌ Error: {e}\n")
+        dns_log.insert(tk.END, f"Error: {e}\n")
 
 # --- Función NTP ---
 def consultar_ntp():
@@ -30,14 +29,12 @@ def consultar_ntp():
         hora = datetime.fromtimestamp(respuesta.tx_time)
         ntp_log.insert(tk.END, f"Hora NTP ({ntp_host}): {hora}\n")
     except Exception as e:
-        ntp_log.insert(tk.END, f"❌ Error: {e}\n")
+        ntp_log.insert(tk.END, f"Error: {e}\n")
 
-# --- Interfaz Tkinter ---
 root = tk.Tk()
 root.title("NetworkLab - DNS y NTP")
 root.geometry("1000x500")
 
-# --- DNS Frame ---
 frame_dns = tk.LabelFrame(root, text="DNS", padx=10, pady=10)
 frame_dns.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
@@ -55,14 +52,13 @@ dns_log = scrolledtext.ScrolledText(frame_dns, width=50)
 dns_log.pack(fill=tk.BOTH, expand=True, pady=5)
 dns_log.insert(tk.END, "Logs DNS:\n")
 
-# --- NTP Frame ---
 frame_ntp = tk.LabelFrame(root, text="NTP", padx=10, pady=10)
 frame_ntp.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
 tk.Label(frame_ntp, text="Servidor NTP:").pack()
 ntp_entry = tk.Entry(frame_ntp, width=30)
 ntp_entry.pack(pady=5)
-ntp_entry.insert(0, "pool.ntp.org")  # Servidor NTP público
+ntp_entry.insert(0, "pool.ntp.org")
 
 btn_ntp = tk.Button(frame_ntp, text="Consultar Hora NTP", command=consultar_ntp)
 btn_ntp.pack(pady=5)
